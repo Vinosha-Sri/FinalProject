@@ -3,20 +3,58 @@ body {
     max-width: 800px;
     margin: auto;
     padding: 20px;
-
-h1 {
     text-align: center;
 }
 
-#product-list {
-    margin-top: 20px;
+h1 {
+    font-size: 2.5em;
+    margin: 0;
 }
 
-#product-form {
+.logo {
+    width: 150px;
+    height: auto;
+    margin-top: 10px;
+}
+
+.hero-button {
     margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.hero-button:hover {
+    background-color: #0056b3;
+}
+
+#product-list-section {
+    margin-top: 40px;
+    text-align: left;
+}
+
+#product-list div {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
 }
 
 label {
     display: block;
     margin: 8px 0;
+}
+
+#product-form {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    max-width: 400px;
+    margin: 20px auto;
 }
