@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Simple Online Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Welcome to Kav and Vinosha's Online Store</h1>
+    <button onclick="showAddProductForm()">Add New Product</button>
+    <div id="Product-List"></div>
+    
+    <div id="product-form" style="display: none;">
+        <h2 id="form-title">Add Product</h2>
+        <input type="hidden" id="product-id">
+        <label>Name: <input type="text" id="product-name"></label>
+        <label>Price: <input type="number" id="product-price" step="0.01"></label>
+        <label>Description: <input type="text" id="product-description"></label>
+        <button onclick="submitProduct()">Submit</button>
+        <button onclick="hideProductForm()">Cancel</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

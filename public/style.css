@@ -1,0 +1,23 @@
+body {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+#product-list {
+    margin-top: 20px;
+}
+
+#product-form {
+    margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin: 8px 0;
+}
