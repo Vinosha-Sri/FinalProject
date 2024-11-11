@@ -24,8 +24,9 @@ async function fetchCart() {
         ? items.map(item => `
             <div>
                 <span><strong>${item.name}</strong> - $${item.price.toFixed(2)} x 
-                    <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, this.value)">
+                    <input type="number" id="quantity-${item.id}" value="${item.quantity}" min="1">
                 </span>
+                <button class="update-button" onclick="updateQuantity(${item.id})">Update</button>
                 <button class="remove-button" onclick="removeFromCart(${item.id})">Remove</button>
             </div>
         `).join('')
@@ -46,13 +47,22 @@ async function addToCart(productId) {
 }
 
 // Update quantity of a product in the cart
-async function updateQuantity(productId, quantity) {
-    await fetch(`/api/cart/${productId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quantity: parseInt(quantity) })
-    });
-    fetchCart();
+async function updateQuantity(productId) {
+    // Get the new quantity from the input field
+    const quantityInput = document.getElementById(`quantity-${productId}`);
+    const quantity = parseInt(quantityInput.value);
+
+    // Send the update request only if quantity is valid
+    if (quantity > 0) {
+        await fetch(`/api/cart/${productId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ quantity })
+        });
+        fetchCart();
+    } else {
+        alert("Quantity must be at least 1.");
+    }
 }
 
 // Remove a product from the cart
