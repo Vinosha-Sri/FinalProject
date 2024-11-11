@@ -53,6 +53,25 @@ app.delete('/api/cart/:productId', (req, res) => {
     }
 });
 
+// Route to update the quantity of a product in the cart
+app.put('/api/cart/:productId', (req, res) => {
+    const productId = parseInt(req.params.productId);
+    const newQuantity = req.body.quantity;
+
+    const cartItem = cart.find(item => item.id === productId);
+
+    if (cartItem && newQuantity > 0) {
+        cartItem.quantity = newQuantity;
+        res.status(200).json(cartItem);
+    } else if (cartItem && newQuantity === 0) {
+        // If quantity is set to 0, remove the item from the cart
+        cart = cart.filter(item => item.id !== productId);
+        res.status(200).json({ message: "Product removed from cart" });
+    } else {
+        res.status(404).json({ message: "Product not found in cart" });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });

@@ -13,7 +13,7 @@ async function fetchProducts() {
     `).join('');
 }
 
-// Fetch and display cart items
+// Fetch and display cart items with quantity controls
 async function fetchCart() {
     const res = await fetch('/api/cart');
     const { items, total } = await res.json();
@@ -23,7 +23,9 @@ async function fetchCart() {
     cartList.innerHTML = items.length > 0
         ? items.map(item => `
             <div>
-                <span><strong>${item.name}</strong> - $${item.price.toFixed(2)}</span>
+                <span><strong>${item.name}</strong> - $${item.price.toFixed(2)} x 
+                    <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${item.id}, this.value)">
+                </span>
                 <button class="remove-button" onclick="removeFromCart(${item.id})">Remove</button>
             </div>
         `).join('')
@@ -39,6 +41,16 @@ async function addToCart(productId) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId })
+    });
+    fetchCart();
+}
+
+// Update quantity of a product in the cart
+async function updateQuantity(productId, quantity) {
+    await fetch(`/api/cart/${productId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ quantity: parseInt(quantity) })
     });
     fetchCart();
 }
