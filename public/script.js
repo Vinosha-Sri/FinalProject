@@ -69,5 +69,3 @@ async function deleteProduct(id) {
     await fetch(`/api/products/${id}`, { method: 'DELETE' });
     fetchProducts();
 }
-
-fetchProducts();
