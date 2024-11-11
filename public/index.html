@@ -10,23 +10,19 @@
     <header>
         <h1>Simple Online Store</h1>
         <img src="logo.png" alt="Team Logo" class="logo">
-        <button class="hero-button" onclick="showAddProductForm()">Add a New Product</button>
     </header>
 
-    <section id="product-list-section">
+    <!-- Product Dashboard Section -->
+    <section id="product-dashboard">
         <h2>Available Products</h2>
-        <div id="product-list"></div>
+        <div id="product-list" class="product-grid"></div>
     </section>
-    
-    <div id="product-form" style="display: none;">
-        <h2 id="form-title">Add Product</h2>
-        <input type="hidden" id="product-id">
-        <label>Name: <input type="text" id="product-name"></label>
-        <label>Price: <input type="number" id="product-price" step="0.01"></label>
-        <label>Description: <input type="text" id="product-description"></label>
-        <button onclick="submitProduct()">Submit</button>
-        <button onclick="hideProductForm()">Cancel</button>
-    </div>
+
+    <!-- Cart Section -->
+    <section id="cart-section">
+        <h2>Your Cart</h2>
+        <div id="cart-list"></div>
+    </section>
 
     <script src="script.js"></script>
 </body>

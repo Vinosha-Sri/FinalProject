@@ -6,34 +6,38 @@ const PORT = 3000;
 app.use(bodyParser.json());
 app.use(express.static('public'));
 
+// Sample product data
 let products = [
     { id: 1, name: "Product 1", price: 10.99, description: "Description for Product 1" },
-    { id: 2, name: "Product 2", price: 12.99, description: "Description for Product 2" }
+    { id: 2, name: "Product 2", price: 12.99, description: "Description for Product 2" },
+    { id: 3, name: "Product 3", price: 15.99, description: "Description for Product 3" }
 ];
 
+// Cart data (empty at start)
+let cart = [];
+
+// Routes for getting products and cart items
 app.get('/api/products', (req, res) => {
     res.json(products);
 });
 
-app.post('/api/products', (req, res) => {
-    const newProduct = { id: products.length + 1, ...req.body };
-    products.push(newProduct);
-    res.status(201).json(newProduct);
+app.get('/api/cart', (req, res) => {
+    res.json(cart);
 });
 
-app.put('/api/products/:id', (req, res) => {
-    const productId = parseInt(req.params.id);
-    const updatedProduct = { id: productId, ...req.body };
-    products = products.map(product => product.id === productId ? updatedProduct : product);
-    res.json(updatedProduct);
-});
+// Route to add a product to the cart
+app.post('/api/cart', (req, res) => {
+    const productId = req.body.productId;
+    const product = products.find(p => p.id === productId);
 
-app.delete('/api/products/:id', (req, res) => {
-    const productId = parseInt(req.params.id);
-    products = products.filter(product => product.id !== productId);
-    res.status(204).end();
+    if (product) {
+        cart.push(product);
+        res.status(201).json(product);
+    } else {
+        res.status(404).json({ message: "Product not found" });
+    }
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${PORT}`);
 });
