@@ -16,15 +16,21 @@ async function fetchProducts() {
 // Fetch and display cart items
 async function fetchCart() {
     const res = await fetch('/api/cart');
-    const cart = await res.json();
+    const { items, total } = await res.json();
     const cartList = document.getElementById('cart-list');
-    cartList.innerHTML = cart.length > 0
-        ? cart.map(item => `
+    const cartTotal = document.getElementById('cart-total');
+
+    cartList.innerHTML = items.length > 0
+        ? items.map(item => `
             <div>
-                <p><strong>${item.name}</strong> - $${item.price.toFixed(2)}</p>
+                <span><strong>${item.name}</strong> - $${item.price.toFixed(2)}</span>
+                <button class="remove-button" onclick="removeFromCart(${item.id})">Remove</button>
             </div>
         `).join('')
         : "<p>Your cart is empty.</p>";
+
+    // Display the cart total
+    cartTotal.textContent = `Total: $${total}`;
 }
 
 // Add a product to the cart
@@ -33,6 +39,14 @@ async function addToCart(productId) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ productId })
+    });
+    fetchCart();
+}
+
+// Remove a product from the cart
+async function removeFromCart(productId) {
+    await fetch(`/api/cart/${productId}`, {
+        method: 'DELETE'
     });
     fetchCart();
 }

@@ -22,7 +22,9 @@ app.get('/api/products', (req, res) => {
 });
 
 app.get('/api/cart', (req, res) => {
-    res.json(cart);
+    // Calculate total for the cart
+    const total = cart.reduce((acc, item) => acc + item.price, 0);
+    res.json({ items: cart, total: total.toFixed(2) });
 });
 
 // Route to add a product to the cart
@@ -35,6 +37,19 @@ app.post('/api/cart', (req, res) => {
         res.status(201).json(product);
     } else {
         res.status(404).json({ message: "Product not found" });
+    }
+});
+
+// Route to remove a product from the cart
+app.delete('/api/cart/:productId', (req, res) => {
+    const productId = parseInt(req.params.productId);
+    const productIndex = cart.findIndex(item => item.id === productId);
+
+    if (productIndex > -1) {
+        cart.splice(productIndex, 1);
+        res.status(200).json({ message: "Product removed from cart" });
+    } else {
+        res.status(404).json({ message: "Product not found in cart" });
     }
 });
 
