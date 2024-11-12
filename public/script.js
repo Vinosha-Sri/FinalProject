@@ -1,4 +1,4 @@
-// Fetch and display available products
+// Fetch and display available products:
 async function fetchProducts() {
     const res = await fetch('/api/products');
     const products = await res.json();
@@ -13,13 +13,12 @@ async function fetchProducts() {
     `).join('');
 }
 
-// Fetch and display cart items with quantity controls
+// Fetch and display cart items with quantity controls:
 async function fetchCart() {
     const res = await fetch('/api/cart');
     const { items, total } = await res.json();
     const cartList = document.getElementById('cart-list');
     const cartTotal = document.getElementById('cart-total');
-
     cartList.innerHTML = items.length > 0
         ? items.map(item => `
             <div>
@@ -32,11 +31,10 @@ async function fetchCart() {
         `).join('')
         : "<p>Your cart is empty.</p>";
 
-    // Display the cart total
+    // Displays the cart total:
     cartTotal.textContent = `Total: $${total}`;
 }
-
-// Add a product to the cart
+// Adds a product to the cart:
 async function addToCart(productId) {
     await fetch('/api/cart', {
         method: 'POST',
@@ -45,14 +43,11 @@ async function addToCart(productId) {
     });
     fetchCart();
 }
-
-// Update quantity of a product in the cart
+// Updates quantity of a product in the cart:
 async function updateQuantity(productId) {
-    // Get the new quantity from the input field
+    // Fetches the new quantity from the input field:
     const quantityInput = document.getElementById(`quantity-${productId}`);
     const quantity = parseInt(quantityInput.value);
-
-    // Send the update request only if quantity is valid
     if (quantity > 0) {
         await fetch(`/api/cart/${productId}`, {
             method: 'PUT',
@@ -61,18 +56,16 @@ async function updateQuantity(productId) {
         });
         fetchCart();
     } else {
-        alert("Quantity must be at least 1.");
+        alert("Quantity has to be at least 1.");
     }
 }
-
-// Remove a product from the cart
+// Removes a product from the cart:
 async function removeFromCart(productId) {
     await fetch(`/api/cart/${productId}`, {
         method: 'DELETE'
     });
     fetchCart();
 }
-
-// Initial fetch for products and cart on page load
+// Initial fetch for products and cart on page load:
 fetchProducts();
 fetchCart();
