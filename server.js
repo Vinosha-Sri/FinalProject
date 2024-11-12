@@ -13,7 +13,7 @@ let products = [
     { id: 3, name: "Product 3", price: 15.99, description: "Description for Product 3" }
 ];
 
-// Cart data (empty at start)
+// Cart data (with quantity information)
 let cart = [];
 
 // Routes for getting products and cart items
@@ -22,8 +22,8 @@ app.get('/api/products', (req, res) => {
 });
 
 app.get('/api/cart', (req, res) => {
-    // Calculate total for the cart
-    const total = cart.reduce((acc, item) => acc + item.price, 0);
+    // Calculate the total price dynamically
+    const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
     res.json({ items: cart, total: total.toFixed(2) });
 });
 
@@ -33,23 +33,16 @@ app.post('/api/cart', (req, res) => {
     const product = products.find(p => p.id === productId);
 
     if (product) {
-        cart.push(product);
+        // Check if the product is already in the cart, if so, increment the quantity
+        const existingProduct = cart.find(item => item.id === productId);
+        if (existingProduct) {
+            existingProduct.quantity += 1;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
         res.status(201).json(product);
     } else {
         res.status(404).json({ message: "Product not found" });
-    }
-});
-
-// Route to remove a product from the cart
-app.delete('/api/cart/:productId', (req, res) => {
-    const productId = parseInt(req.params.productId);
-    const productIndex = cart.findIndex(item => item.id === productId);
-
-    if (productIndex > -1) {
-        cart.splice(productIndex, 1);
-        res.status(200).json({ message: "Product removed from cart" });
-    } else {
-        res.status(404).json({ message: "Product not found in cart" });
     }
 });
 
@@ -66,6 +59,19 @@ app.put('/api/cart/:productId', (req, res) => {
     } else if (cartItem && newQuantity === 0) {
         // If quantity is set to 0, remove the item from the cart
         cart = cart.filter(item => item.id !== productId);
+        res.status(200).json({ message: "Product removed from cart" });
+    } else {
+        res.status(404).json({ message: "Product not found in cart" });
+    }
+});
+
+// Route to remove a product from the cart
+app.delete('/api/cart/:productId', (req, res) => {
+    const productId = parseInt(req.params.productId);
+    const productIndex = cart.findIndex(item => item.id === productId);
+
+    if (productIndex > -1) {
+        cart.splice(productIndex, 1);
         res.status(200).json({ message: "Product removed from cart" });
     } else {
         res.status(404).json({ message: "Product not found in cart" });
