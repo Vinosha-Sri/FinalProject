@@ -8,9 +8,9 @@ app.use(express.static('public'));
 
 // Sample product data
 let products = [
-    { id: 1, name: "Product 1", price: 10.99, description: "Description for Product 1" },
-    { id: 2, name: "Product 2", price: 12.99, description: "Description for Product 2" },
-    { id: 3, name: "Product 3", price: 15.99, description: "Description for Product 3" }
+    { id: 1, name: "Product 1", price: 10.99, description: "Apple AirPods" },
+    { id: 2, name: "Product 2", price: 12.99, description: "Macbook Pro" },
+    { id: 3, name: "Product 3: ", price: 15.99, description: "iPhone 14" }
 ];
 
 // Cart data (with quantity information)
