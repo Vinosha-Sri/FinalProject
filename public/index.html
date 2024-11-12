@@ -1,30 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Character encoding and viewport settings for responsiveness -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Title of the webpage which will be displayed in the browser tab -->
     <title>K & V - Online Shopping</title>
+    
+    <!-- Links to the external CSS file for styling -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Header section is formed with the information containing the website's title and logo -->
     <header>
         <h1>K & V - Online Shopping</h1>
+        <!-- Team's Logo -->
         <img src="logo.png" alt="Team Logo" class="logo">
     </header>
 
-    <!-- Product Dashboard Section -->
+    <!-- Product Dashboard Section: Displays the list of available products: -->
     <section id="product-dashboard">
         <h2>Available Products</h2>
+        <!-- Product list will be dynamically populated here -->
         <div id="product-list" class="product-grid"></div>
     </section>
 
-    <!-- Cart Section -->
+    <!-- Cart Section: Displays the items in the user's shopping cart -->
     <section id="cart-section">
         <h2>Your Cart</h2>
+        <!-- Cart items will be displayed here -->
         <div id="cart-list"></div>
+        <!-- Displays the total price of items in the cart -->
         <p id="cart-total"></p>
     </section>
 
+    <!-- Links to the external JavaScript file to add functionality: -->
     <script src="script.js"></script>
 </body>
 </html>
