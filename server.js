@@ -9,13 +9,12 @@ app.use(express.static('public'));
 
 app.use(
     session({
-        secret: 'secure-secret', // Replace with environment variable in production
+        secret: 'secure-secret',
         resave: false,
         saveUninitialized: true,
     })
 );
 
-// Mock users database
 let users = [];
 let products = [
     { id: 1, name: "Product 1", price: 179.99, description: "Apple AirPods" },
@@ -24,7 +23,7 @@ let products = [
 ];
 let cart = [];
 
-// Authentication Routes
+// Authentication routes
 app.post('/auth/register', (req, res) => {
     const { username, password } = req.body;
     if (users.find(user => user.username === username)) {
@@ -50,7 +49,7 @@ app.post('/auth/logout', (req, res) => {
     res.status(200).json({ message: 'Logout successful' });
 });
 
-// Middleware to protect routes
+// Middleware for protected routes
 function authMiddleware(req, res, next) {
     if (req.session.user) {
         next();
@@ -59,10 +58,10 @@ function authMiddleware(req, res, next) {
     }
 }
 
-// Product and Cart Routes
+// Product and Cart API routes
 app.get('/api/products', (req, res) => res.json(products));
 
-app.get('/api/cart', (req, res) => {
+app.get('/api/cart', authMiddleware, (req, res) => {
     const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
     res.json({ items: cart, total: total.toFixed(2) });
 });
@@ -99,6 +98,15 @@ app.delete('/api/cart/:productId', authMiddleware, (req, res) => {
     const productId = parseInt(req.params.productId);
     cart = cart.filter(item => item.id !== productId);
     res.status(200).json({ message: "Product removed from cart" });
+});
+
+// Routes for navigation
+app.get('/products', (req, res) => {
+    res.sendFile(__dirname + '/public/products.html');
+});
+
+app.get('/cart', (req, res) => {
+    res.sendFile(__dirname + '/public/cart.html');
 });
 
 app.listen(PORT, () => {

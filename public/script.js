@@ -57,6 +57,11 @@ function showRegisterForm() {
     document.getElementById('login-form').style.display = 'none';
 }
 
-// Fetch and display products and cart
-fetchProducts();
-fetchCart();
+// Check login state on page load
+async function checkLoginState() {
+    const res = await fetch('/auth/login-status'); // Optional: Add an endpoint to check session status
+    toggleAuthLinks(res.ok);
+}
+
+// Initialize
+checkLoginState();
