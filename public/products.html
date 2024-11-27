@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Products - K & V</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>K & V - Available Products</h1>
+        <img src="logo.png" alt="Team Logo" class="logo">
+        <nav>
+            <ul id="nav-links">
+                <li id="logout-link"><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="product-dashboard">
+        <h2>Available Products</h2>
+        <div id="product-list" class="product-grid"></div>
+    </section>
+
+    <script>
+        async function fetchProducts() {
+            const res = await fetch('/api/products');
+            const products = await res.json();
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = products.map(product => `
+                <div class="product-card">
+                    <h3>${product.name}</h3>
+                    <p class="price">$${product.price.toFixed(2)}</p>
+                    <p>${product.description}</p>
+                    <button onclick="addToCart(${product.id})">Add to Cart</button>
+                </div>
+            `).join('');
+        }
+
+        async function addToCart(productId) {
+            const res = await fetch('/api/cart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId }),
+            });
+            if (res.ok) {
+                alert('Product added to cart');
+            } else {
+                alert('You need to log in to add products to the cart.');
+            }
+        }
+
+        async function logout() {
+            await fetch('/auth/logout', { method: 'POST' });
+            alert('Logged out');
+            window.location.href = '/';
+        }
+
+        fetchProducts();
+    </script>
+</body>
+</html>
