@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart - K & V</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>K & V - Your Cart</h1>
+        <img src="logo.png" alt="Team Logo" class="logo">
+        <nav>
+            <ul id="nav-links">
+                <li id="logout-link"><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="cart-section">
+        <h2>Your Cart</h2>
+        <div id="cart-list"></div>
+        <p id="cart-total"></p>
+    </section>
+
+    <script>
+        async function fetchCart() {
+            const res = await fetch('/api/cart');
+            if (res.ok) {
+                const { items, total } = await res.json();
+                const cartList = document.getElementById('cart-list');
+                const cartTotal = document.getElementById('cart-total');
+                cartList.innerHTML = items.map(item => `
+                    <div>
+                        <strong>${item.name}</strong> - $${item.price.toFixed(2)} x 
+                        <input type="number" id="quantity-${item.id}" value="${item.quantity}" min="1">
+                        <button onclick="updateQuantity(${item.id})">Update</button>
+                        <button onclick="removeFromCart(${item.id})">Remove</button>
+                    </div>
+                `).join('');
+                cartTotal.textContent = `Total: $${total}`;
+            } else {
+                alert('You need to log in to view your cart.');
+                window.location.href = '/';
+            }
+        }
+
+        async function updateQuantity(productId) {
+            const quantity = document.getElementById(`quantity-${productId}`).value;
+            if (quantity > 0) {
+                await fetch(`/api/cart/${productId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ quantity }),
+                });
+                fetchCart();
+            } else {
+                alert('Quantity must be at least 1');
+            }
+        }
+
+        async function removeFromCart(productId) {
+            await fetch(`/api/cart/${productId}`, { method: 'DELETE' });
+            fetchCart();
+        }
+
+        async function logout() {
+            await fetch('/auth/logout', { method: 'POST' });
+            alert('Logged out');
+            window.location.href = '/';
+        }
+
+        fetchCart();
+    </script>
+</body>
+</html>
