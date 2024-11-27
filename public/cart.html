@@ -1,75 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Cart - K & V</title>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Your Cart - K & V</title> 
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
     <header>
-        <h1>K & V - Your Cart</h1>
-        <img src="logo.png" alt="Team Logo" class="logo">
+        <h1>K & V - Your Cart</h1> <!-- Page Heading -->
+        <img src="logo.png" alt="Team Logo" class="logo"> <!-- Team logo shown -->
         <nav>
             <ul id="nav-links">
-                <li id="logout-link"><a href="#" onclick="logout()">Logout</a></li>
+                <li id="logout-link"><a href="#" onclick="logout()">Logout</a></li> <!-- Logout link triggers the logout function. -->
             </ul>
         </nav>
     </header>
-
+    <!-- Displays the cart items and total -->
     <section id="cart-section">
-        <h2>Your Cart</h2>
-        <div id="cart-list"></div>
-        <p id="cart-total"></p>
+        <h2>Your Cart</h2> <!-- Subheading for the cart section -->
+        <div id="cart-list"></div> <!-- Container where cart items will be dynamically loaded -->
+        <p id="cart-total"></p> <!-- Paragraph to display the total cost of the cart -->
     </section>
-
     <script>
+        // Fetches the cart items from the server and displays them
         async function fetchCart() {
-            const res = await fetch('/api/cart');
+            const res = await fetch('/api/cart'); // Makes a GET request to retrieve cart data
             if (res.ok) {
-                const { items, total } = await res.json();
-                const cartList = document.getElementById('cart-list');
-                const cartTotal = document.getElementById('cart-total');
+                const { items, total } = await res.json(); // Parses the response JSON to extract items and total
+                const cartList = document.getElementById('cart-list'); // References the cart items container
+                const cartTotal = document.getElementById('cart-total'); // References the total cost element
+                // Generates HTML for each cart item, including update and remove buttons
                 cartList.innerHTML = items.map(item => `
                     <div>
                         <strong>${item.name}</strong> - $${item.price.toFixed(2)} x 
-                        <input type="number" id="quantity-${item.id}" value="${item.quantity}" min="1">
-                        <button onclick="updateQuantity(${item.id})">Update</button>
-                        <button onclick="removeFromCart(${item.id})">Remove</button>
+                        <input type="number" id="quantity-${item.id}" value="${item.quantity}" min="1"> <!-- Input field to adjust quantity -->
+                        <button onclick="updateQuantity(${item.id})">Update</button> <!-- Button to update item quantity -->
+                        <button onclick="removeFromCart(${item.id})">Remove</button> <!-- Button to remove item from cart -->
                     </div>
-                `).join('');
-                cartTotal.textContent = `Total: $${total}`;
+                `).join(''); // Joins all item elements into one string
+                cartTotal.textContent = `Total: $${total}`; // Updates the total cost text
             } else {
+                // If the request fails, alert the user and redirect to the homepage
                 alert('You need to log in to view your cart.');
                 window.location.href = '/';
             }
         }
-
+        // Updates the quantity of a cart item
         async function updateQuantity(productId) {
-            const quantity = document.getElementById(`quantity-${productId}`).value;
+            const quantity = document.getElementById(`quantity-${productId}`).value; // Gets the new quantity from the input field
             if (quantity > 0) {
                 await fetch(`/api/cart/${productId}`, {
-                    method: 'PUT',
+                    method: 'PUT', // Sends a PUT request to update the item quantity
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ quantity }),
+                    body: JSON.stringify({ quantity }), // Sends the updated quantity in the request body
                 });
-                fetchCart();
+                fetchCart(); // Refreshes the cart after updating
             } else {
-                alert('Quantity must be at least 1');
+                alert('Quantity must be at least 1'); // Displays an alert if the quantity is invalid
             }
         }
-
+        // Removes a cart item
         async function removeFromCart(productId) {
-            await fetch(`/api/cart/${productId}`, { method: 'DELETE' });
-            fetchCart();
+            await fetch(`/api/cart/${productId}`, { method: 'DELETE' }); // Sends a DELETE request to remove the item
+            fetchCart(); // Refreshes the cart after removal
         }
-
+        // Logs the user out and redirects to the homepage
         async function logout() {
-            await fetch('/auth/logout', { method: 'POST' });
-            alert('Logged out');
-            window.location.href = '/';
+            await fetch('/auth/logout', { method: 'POST' }); // Sends a POST request to log out
+            alert('Logged out'); // Displays a logout confirmation
+            window.location.href = '/'; // Redirects to the homepage
         }
-
+        // Calls the fetchCart function when the page loads
         fetchCart();
     </script>
 </body>
