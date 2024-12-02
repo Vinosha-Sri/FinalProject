@@ -1,25 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>K & V - Online Shopping</title> 
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>K & V - Online Shopping</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <a href="/"><img src="logo.png" alt="Team Logo" class="logo"></a>
+            </div>
+            <ul class="navbar-links">
+                <li id="home-link"><a href="/" class="active">Home</a></li>
+                <li id="products-link" style="display:none;"><a href="/products">Products</a></li>
+                <li id="cart-link" style="display:none;"><a href="/cart">Cart</a></li>
+                <li id="login-link"><a href="#" onclick="showLoginForm()">Login</a></li>
+                <li id="register-link"><a href="#" onclick="showRegisterForm()">Register</a></li>
+                <li id="logout-link" style="display:none;"><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
     <header>
         <h1>K & V - Online Shopping</h1>
         <img src="logo.png" alt="Team Logo" class="logo">
     </header>
-    <nav>
-        <ul id="nav-links">
-            <li id="login-link"><a href="#" onclick="showLoginForm()">Login</a></li>
-            <li id="register-link"><a href="#" onclick="showRegisterForm()">Register</a></li>
-            <li id="products-link" style="display:none;"><a href="/products">Products</a></li>
-            <li id="cart-link" style="display:none;"><a href="/cart">Cart</a></li>
-            <li id="logout-link" style="display:none;"><a href="#" onclick="logout()">Logout</a></li>
-        </ul>
-    </nav>
+
     <div id="auth-forms">
         <form id="login-form" style="display:none;" onsubmit="login(event)">
             <h2>Login</h2>
@@ -34,14 +44,17 @@
             <button type="submit">Register</button>
         </form>
     </div>
+
     <section id="product-dashboard">
         <h2>Available Products</h2>
         <button onclick="window.location.href='/products'">View Products</button>
     </section>
+
     <section id="cart-section">
         <h2>Your Cart</h2>
         <button onclick="window.location.href='/cart'">View Cart</button>
     </section>
+
     <script src="script.js"></script>
 </body>
 </html>

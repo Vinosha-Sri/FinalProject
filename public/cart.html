@@ -7,29 +7,34 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>K & V - Your Cart</h1>
-        <img src="logo.png" alt="Team Logo" class="logo">
-    </header>
-    <nav>
-        <ul id="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/products">Products</a></li>
-            <li id="logout-link"><a href="#" onclick="logout()">Logout</a></li>
-        </ul>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <a href="/"><img src="logo.png" alt="Team Logo" class="logo"></a>
+            </div>
+            <ul class="navbar-links">
+                <li id="home-link"><a href="/">Home</a></li>
+                <li id="products-link"><a href="/products">Products</a></li>
+                <li id="cart-link" class="active"><a href="/cart">Cart</a></li>
+                <li id="logout-link"><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
     </nav>
+
+    <!-- Main Content -->
     <section id="cart-section">
         <h2>Your Cart</h2>
         <div id="cart-list"></div>
         <p id="cart-total"></p>
     </section>
+
     <script>
         async function fetchCart() {
             const res = await fetch('/api/cart');
             if (res.ok) {
                 const { items, total } = await res.json();
                 const cartList = document.getElementById('cart-list');
-                const cartTotal = document.getElementById('cart-total');
                 cartList.innerHTML = items.map(item => `
                     <div>
                         <strong>${item.name}</strong> - $${item.price.toFixed(2)} x 
@@ -38,28 +43,11 @@
                         <button onclick="removeFromCart(${item.id})">Remove</button>
                     </div>
                 `).join('');
-                cartTotal.textContent = `Total: $${total}`;
+                document.getElementById('cart-total').textContent = `Total: $${total}`;
             } else {
                 alert('You need to log in to view your cart.');
                 window.location.href = '/';
             }
-        }
-        async function updateQuantity(productId) {
-            const quantity = document.getElementById(`quantity-${productId}`).value;
-            if (quantity > 0) {
-                await fetch(`/api/cart/${productId}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ quantity }),
-                });
-                fetchCart();
-            } else {
-                alert('Quantity must be at least 1');
-            }
-        }
-        async function removeFromCart(productId) {
-            await fetch(`/api/cart/${productId}`, { method: 'DELETE' });
-            fetchCart();
         }
         async function logout() {
             await fetch('/auth/logout', { method: 'POST' });

@@ -2,26 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-    <title>Available Products - K & V</title> 
-    <link rel="stylesheet" href="style.css"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Products - K & V</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>K & V - Available Products</h1>
-        <img src="logo.png" alt="Team Logo" class="logo">
-    </header>
-    <nav>
-        <ul id="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="/cart">Cart</a></li>
-            <li id="logout-link"><a href="#" onclick="logout()">Logout</a></li>
-        </ul>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">
+                <a href="/"><img src="logo.png" alt="Team Logo" class="logo"></a>
+            </div>
+            <ul class="navbar-links">
+                <li id="home-link"><a href="/">Home</a></li>
+                <li id="products-link" class="active"><a href="/products">Products</a></li>
+                <li id="cart-link"><a href="/cart">Cart</a></li>
+                <li id="logout-link"><a href="#" onclick="logout()">Logout</a></li>
+            </ul>
+        </div>
     </nav>
+
+    <!-- Main Content -->
     <section id="product-dashboard">
         <h2>Available Products</h2>
         <div id="product-list" class="product-grid"></div>
     </section>
+
     <script>
         async function fetchProducts() {
             const res = await fetch('/api/products');
@@ -35,18 +41,6 @@
                     <button onclick="addToCart(${product.id})">Add to Cart</button>
                 </div>
             `).join('');
-        }
-        async function addToCart(productId) {
-            const res = await fetch('/api/cart', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ productId }),
-            });
-            if (res.ok) {
-                alert('Product added to cart');
-            } else {
-                alert('You need to log in to add products to the cart.');
-            }
         }
         async function logout() {
             await fetch('/auth/logout', { method: 'POST' });
