@@ -1,4 +1,31 @@
-/* Navbar styles */
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+    color: #333;
+    text-align: center;
+}
+
+/* Header Styles */
+header {
+    padding: 20px;
+    background-color: #e3f2fd;
+    border-bottom: 2px solid #2196f3;
+}
+
+header h1 {
+    font-size: 2rem;
+    color: #2196f3;
+}
+
+header img.header-logo {
+    width: 100px;
+    margin-top: 10px;
+}
+
+/* Navigation Bar */
 .navbar {
     background-color: #232f3e;
     color: white;
@@ -51,10 +78,54 @@
     color: white;
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .navbar-links {
-        flex-direction: column;
-        text-align: center;
-    }
+/* Product Grid */
+.product-grid {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.product-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 200px;
+    text-align: center;
+}
+
+.product-card h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.product-card p {
+    color: #555;
+}
+
+.product-card button {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.product-card button:hover {
+    background-color: #1769aa;
+}
+
+/* Cart Section */
+#cart-section {
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-top: 2px solid #2196f3;
+}
+
+#cart-section h2 {
+    color: #2196f3;
 }
