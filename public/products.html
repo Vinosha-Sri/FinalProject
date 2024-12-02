@@ -7,58 +7,52 @@
     <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
-    <!-- website's title, logo, and navigation -->
     <header>
-        <h1>K & V - Available Products</h1> <!-- Main heading of the page -->
-        <img src="logo.png" alt="Team Logo" class="logo"> <!-- Logo image with alternative text for accessibility -->
-        <nav>
-            <ul id="nav-links">
-                <li id="logout-link"><a href="#" onclick="logout()">Logout</a></li> <!-- Logout link with a JavaScript function to handle logout -->
-            </ul>
-        </nav>
+        <h1>K & V - Available Products</h1>
+        <img src="logo.png" alt="Team Logo" class="logo">
     </header>
-    <!-- Section to display the list of available products -->
+    <nav>
+        <ul id="nav-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li id="logout-link"><a href="#" onclick="logout()">Logout</a></li>
+        </ul>
+    </nav>
     <section id="product-dashboard">
-        <h2>Available Products</h2> <!-- Subheading for the products section -->
-        <div id="product-list" class="product-grid"></div> <!-- Container where products will be dynamically rendered -->
+        <h2>Available Products</h2>
+        <div id="product-list" class="product-grid"></div>
     </section>
     <script>
-        // Fetches the list of products from the server and displays them on the page
         async function fetchProducts() {
-            const res = await fetch('/api/products'); // Fetch request to retrieve product data
-            const products = await res.json(); // Converts the response to JSON
-            const productList = document.getElementById('product-list'); // Gets the container for product cards
-            // Generates HTML for each product and inserts it into the container
+            const res = await fetch('/api/products');
+            const products = await res.json();
+            const productList = document.getElementById('product-list');
             productList.innerHTML = products.map(product => `
                 <div class="product-card">
-                    <h3>${product.name}</h3> <!-- Displays the product name -->
-                    <p class="price">$${product.price.toFixed(2)}</p> <!-- Displays the product price with two decimal places -->
-                    <p>${product.description}</p> <!-- Displays the product description -->
-                    <button onclick="addToCart(${product.id})">Add to Cart</button> <!-- Button to add the product to the cart -->
+                    <h3>${product.name}</h3>
+                    <p class="price">$${product.price.toFixed(2)}</p>
+                    <p>${product.description}</p>
+                    <button onclick="addToCart(${product.id})">Add to Cart</button>
                 </div>
-            `).join(''); // Joins all product cards into a single HTML string
+            `).join('');
         }
-        // Sends a request to add a product to the cart
         async function addToCart(productId) {
             const res = await fetch('/api/cart', {
-                method: 'POST', // Sends a POST request
-                headers: { 'Content-Type': 'application/json' }, // Specifies JSON data in the request
-                body: JSON.stringify({ productId }), // Sends the product ID as the request body
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ productId }),
             });
-            // Displays a success or error message based on the response
             if (res.ok) {
-                alert('Product added to cart'); // Success message
+                alert('Product added to cart');
             } else {
-                alert('You need to log in to add products to the cart.'); // Error message if user is not logged in
+                alert('You need to log in to add products to the cart.');
             }
         }
-        // Logs out the user by sending a logout request to the server
         async function logout() {
-            await fetch('/auth/logout', { method: 'POST' }); // Sends a POST request to log out
-            alert('Logged out'); // Displays a logout confirmation message
-            window.location.href = '/'; // Redirects to the home page
+            await fetch('/auth/logout', { method: 'POST' });
+            alert('Logged out');
+            window.location.href = '/';
         }
-        // Calls the fetchProducts function when the page loads
         fetchProducts();
     </script>
 </body>
