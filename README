@@ -1,0 +1,47 @@
+# FinalProject - Online Shopping Platform
+
+Welcome to the K & V Online Shopping Platform. This project is a simple e-commerce website that allows users to browse products, add items to their cart, and manage their orders. The project also includes user authentication through traditional login/register methods and OAuth2 using Google and GitHub.
+
+## Features
+
+- User Authentication: 
+  - Traditional username/password login and registration.
+  - OAuth2 integration for Google and GitHub.
+  
+- Shopping Cart: 
+  - Add items to the cart from the product catalog.
+  - Update item quantities or remove items from the cart.
+  - View total costs dynamically.
+
+- Responsive Design: 
+  - Modern and user-friendly interface.
+  - Compatible with multiple devices and screen sizes.
+
+- Backend and API:
+  - Node.js and Express.js used for backend development.
+  - REST API endpoints for cart management and user authentication.
+
+## API Endpoints
+
+### Authentication
+- GET /login: Login page
+- GET /register: Registration page
+- GET /auth/google: Google OAuth login
+- GET /auth/github: GitHub OAuth login
+- POST /auth/logout: Logout user
+
+### Cart
+- GET /api/cart: Get all cart items and total cost
+- POST /api/cart: Add an item to the cart
+- PUT /api/cart/:id: Update item quantity
+- DELETE /api/cart/:id: Remove an item from the cart
+
+## Contributions
+
+### Vinosha Srikugananthan
+- Worked on cart.html, style.css, login.html, and register.html.
+- Designed the user interface and implemented front-end functionalities.
+
+### Kavinayan Thayananthakumar
+- Worked on index.html, script.js, and server.js.
+- Developed the backend logic and integrated API endpoints.
